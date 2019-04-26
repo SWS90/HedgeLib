@@ -19,20 +19,24 @@ namespace HedgeLib.Sets
 
         public string ObjectType;
         public uint ObjectID;
+        public uint TargetID; 
+        public Vector3 TargetPosition;
 
-		// Constructors
-		public SetObject() { }
+        // Constructors
+        public SetObject() { }
         public SetObject(XElement elem, uint? defaultObjID = null)
         {
             ImportXElement(elem, defaultObjID);
         }
 
-		public SetObject(SetObjectType type, string typeName, uint objID)
-		{
-			ObjectType = typeName;
-			ObjectID = objID;
+        public SetObject(SetObjectType type, string typeName, uint objID, uint tarID, Vector3 tarPos)
+        {
+            ObjectType = typeName;
+            ObjectID = objID;
+            TargetID = tarID;
+            TargetPosition = tarPos;
 
-			foreach (var param in type.Parameters)
+            foreach (var param in type.Parameters)
 			{
                 if (param is SetObjectTypeParamGroup group)
                 {

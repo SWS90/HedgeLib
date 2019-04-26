@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace HedgeEdit.UI
 {
@@ -200,8 +201,7 @@ namespace HedgeEdit.UI
                 if (Data.CurrentSetLayer == null)
                     return;
 
-                var obj = new SetObject(template, template.Name,
-                    (uint)Data.CurrentSetLayer.Objects.Count);
+                var obj = new SetObject(template, template.Name, (uint)Data.CurrentSetLayer.Objects.Count, 0, new Vector3());
                 Data.CurrentSetLayer.Objects.Add(obj);
 
                 var script = Stage.Script;

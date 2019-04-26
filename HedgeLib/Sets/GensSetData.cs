@@ -42,7 +42,10 @@ namespace HedgeLib.Sets
             var transform = new SetObjectTransform();
             SetObjectTransform[] children = null;
             uint? objID = null;
+            int tarID = 0;
+            Vector3 tarPos = new Vector3();
             float? range = null;
+     
 
             if (elemName == null)
                 elemName = element.Name.LocalName;
@@ -102,10 +105,27 @@ namespace HedgeLib.Sets
                                     // TODO: Parse other elements.
                             }
                         }
+                            children = childObjs.ToArray();
+                            continue;
+                        }
+                    case "target":
+                        {
+                            var tarElem = paramElement.Element("SetObjectID");
+                            if (tarElem == null) continue;
 
-                        children = childObjs.ToArray();
-                        continue;
-                    }
+                            if (!int.TryParse(tarElem.Value, out tarID)) continue;
+
+                            //var childObjs = new List<SetObjectTransform>();
+
+                            //children = childObjs.ToArray();
+                            continue;
+                        }
+
+                    case "targetposition":
+                        {
+                            tarPos = paramElement.GetVector3();
+                            continue;
+                        }
                 }
 
                 // Type
@@ -150,7 +170,9 @@ namespace HedgeLib.Sets
                 Parameters = parameters,
                 Transform = transform,
                 Children = children ?? new SetObjectTransform[0],
-                ObjectID = objID.Value
+                ObjectID = objID.Value,
+                TargetID = (uint)tarID,
+                TargetPosition = tarPos 
             };
 
             if (range.HasValue)
@@ -249,6 +271,8 @@ namespace HedgeLib.Sets
             // Special Parameters
             elem.AddElem("Range", obj.GetCustomDataValue<float>("Range", 100));
             elem.AddElem("SetObjectID", obj.ObjectID);
+            elem.AddElem("Target", obj.TargetID);
+            elem.AddElem("TargetPosition", obj.TargetPosition);
 
             foreach (var customData in obj.CustomData)
             {
